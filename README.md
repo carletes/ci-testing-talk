@@ -193,7 +193,39 @@ def test_idempotence(lst):
 
 ---
 
-## Testing multiple things (XX)
+## Testing multiple things (5)
+
+Fixtures can return multiple values, too:
+
+```python
+import pytest
+from sort import sort
+
+@pytest.fixture(params=[
+    ([], []),
+    ([3, 2, 1], [1, 2, 3]),
+    ([1, 1, 1], [1, 1, 1]),
+
+])
+def sample(request):
+    return request.param
+
+def test_sort(sample):
+    lst, expected = sample
+    assert sort(lst) == expected
+
+def test_length(sample):
+    lst, _ = sample
+    assert len(sort(lst)) == len(lst)
+
+def test_idempotence(sample):
+    lst, _ = sample
+    assert sort(sort(lst)) == sort(lst)
+```
+
+---
+
+## Testing multiple things (6)
 
 Real world example: EFAS layers
 
