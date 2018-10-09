@@ -148,6 +148,53 @@ $
 
 ## Testing multiple things (3)
 
+Another example: a sorting function
+
+```python
+# tests/sort.py
+
+def sort(lst):
+    if not lst:
+        return lst
+
+    head, tail = lst[0], lst[1:]
+    return (sort([a for a in tail if a <= head]) +
+            [head] +
+            sort([a for a in tail if a > head]))
+
+```
+
+---
+
+## Testing multiple things (4)
+
+Use *test fixtures* to avoid repeating test samples:
+
+```python
+# tests/test_sort.py
+
+import pytest
+
+from sort import sort
+
+
+@pytest.fixture
+def lst():
+    return [1, 2, 3]
+
+
+def test_length(lst):
+    assert len(sort(lst)) == len(lst)
+
+
+def test_idempotence(lst):
+    assert sort(sort(lst)) == sort(lst)
+```
+
+---
+
+## Testing multiple things (XX)
+
 Real world example: EFAS layers
 
 https://tinyurl.com/y9mmqo4g
